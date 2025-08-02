@@ -1,28 +1,1123 @@
-// Interactive Educational +- Lucky Arena Website (Inspired by jw.casino) // Technologies: React +- Firebase +- Tailwind +- Framer Motion +- Razorpay
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premier Painters | Professional Painting Services in Ghazipur</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #2a6bcc;
+            --primary-dark: #1d4d8c;
+            --secondary: #f9b234;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e09c1f;
+        }
+        
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        .logo-icon i {
+            color: white;
+            font-size: 24px;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .logo-text span {
+            color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 16px;
+            position: relative;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+        
+        .mobile-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Hero Slider */
+        .hero {
+            height: 100vh;
+            position: relative;
+            margin-top: 80px;
+        }
+        
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .swiper-slide {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 10;
+            max-width: 800px;
+            width: 90%;
+        }
+        
+        .slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .slide-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .slide-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .service-content {
+            padding: 25px;
+        }
+        
+        .service-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .service-content p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        /* About Section */
+        .about {
+            background-color: var(--light);
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .about-img {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .about-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .about-text h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .about-text p {
+            margin-bottom: 15px;
+        }
+        
+        .experience-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .experience-box h3 {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            background-color: var(--light-gray);
+        }
+        
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            margin: 20px;
+        }
+        
+        .testimonial-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 25px;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .testimonial-text::before,
+        .testimonial-text::after {
+            content: '"';
+            font-size: 3rem;
+            color: var(--secondary);
+            opacity: 0.3;
+            position: absolute;
+        }
+        
+        .testimonial-text::before {
+            top: -20px;
+            left: -15px;
+        }
+        
+        .testimonial-text::after {
+            bottom: -40px;
+            right: -15px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .author-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            margin-right: 15px;
+        }
+        
+        .author-info h4 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .author-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+        
+        .contact-form {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(42, 107, 204, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .map-container {
+            height: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            transition: var(--transition);
+        }
+        
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+        
+        .contact-info {
+            list-style: none;
+        }
+        
+        .contact-info li {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .contact-info i {
+            color: var(--secondary);
+            font-size: 20px;
+            margin-right: 15px;
+            min-width: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .about-content,
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .about-img {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            .map-container {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+            
+            nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: white;
+                transition: var(--transition);
+                padding: 40px 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 0 0 20px 0;
+            }
+            
+            .slide-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .slide-content h1 {
+                font-size: 2rem;
+            }
+            
+            .slide-content p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+            }
+            
+            .testimonial-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-paint-roller"></i>
+                </div>
+                <div class="logo-text">Premier<span>Painters</span></div>
+            </div>
+            
+            <div class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-// 1. index.js - Entry Point import React from "react"; import ReactDOM from "react-dom/client"; import App from "./App"; import "./index.css";
+    <!-- Hero Slider -->
+    <section class="hero" id="home">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" style="background-image: url('https://images.unsplash.com/photo-1593696140826-c58b021acf8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h1>Professional Painting Services in Ghazipur</h1>
+                        <p>Transforming spaces with quality craftsmanship and attention to detail</p>
+                        <a href="#contact" class="btn">Get Free Quote</a>
+                    </div>
+                </div>
+                <div class="swiper-slide" style="background-image: url('https://images.unsplash.com/photo-1615529162924-f8605388463a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h1>Residential & Commercial Painting Experts</h1>
+                        <p>Over 25 years of experience serving Ghazipur and surrounding areas</p>
+                        <a href="#services" class="btn">Our Services</a>
+                    </div>
+                </div>
+                <div class="swiper-slide" style="background-image: url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80');">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h1>Quality Workmanship Guaranteed</h1>
+                        <p>We use premium paints and materials for lasting results</p>
+                        <a href="#contact" class="btn">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
 
-const root = ReactDOM.createRoot(document.getElementById("root")); root.render( <React.StrictMode> <App /> </React.StrictMode> );
+    <!-- Services Section -->
+    <section class="section" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Painting Services</h2>
+                <p>We offer a comprehensive range of professional painting services for residential and commercial properties</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1593696140826-c58b021acf8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Residential Painting</h3>
+                        <p>Transform your home with our expert interior and exterior painting services. We use premium paints for long-lasting results.</p>
+                        <a href="#contact" class="btn btn-secondary">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1615529162924-f8605388463a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Commercial Painting</h3>
+                        <p>Professional painting solutions for offices, retail spaces, and commercial buildings with minimal disruption to your business.</p>
+                        <a href="#contact" class="btn btn-secondary">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1594818379496-da1e345b0ded?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Waterproofing</h3>
+                        <p>Protect your property from water damage with our specialized waterproofing solutions for roofs, walls, and basements.</p>
+                        <a href="#contact" class="btn btn-secondary">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Wallpaper Installation</h3>
+                        <p>Enhance your interiors with our professional wallpaper installation services and a wide selection of premium wallpapers.</p>
+                        <a href="#contact" class="btn btn-secondary">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1617103996702-96ff29b1c467?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1332&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Decorative Finishes</h3>
+                        <p>Create unique visual effects with our specialized decorative painting techniques and finishes.</p>
+                        <a href="#contact" class="btn btn-secondary">Get Quote</a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1594818379496-da1e345b0ded?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');"></div>
+                    <div class="service-content">
+                        <h3>Wood Finishing</h3>
+                        <p>Restore and protect your wooden surfaces with our expert staining, varnishing, and finishing services.</p>
+                        <a href="#contact" class="btn btn-secondary">Get Quote</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-// 2. App.jsx - Main App Component with Routes import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; import Home from "./pages/Home"; import StudyArena from "./pages/StudyArena"; import LuckyArena from "./pages/LuckyArena"; import Login from "./pages/Login"; import Wallet from "./components/Wallet"; import Profile from "./components/Profile"; import AdminPanel from "./components/AdminPanel";
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Our Company</h2>
+                <p>With decades of experience, we've been transforming homes and businesses in Ghazipur</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-img">
+                    <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Painting team at work">
+                </div>
+                
+                <div class="about-text">
+                    <h2>Family-Owned Painting Business Since 1995</h2>
+                    <p>Premier Painters was founded in Ghazipur by Mr. Sharma, a master painter with over 25 years of experience in the industry. What started as a small family business has grown into one of Ghazipur's most trusted painting contractors.</p>
+                    <p>We take pride in our commitment to quality workmanship, attention to detail, and customer satisfaction. As a family-run business, we treat every project as if it were our own home.</p>
+                    <p>Our team of skilled painters undergoes continuous training to stay updated with the latest techniques, materials, and safety standards in the painting industry.</p>
+                    
+                    <div class="experience-box">
+                        <h3>25+//3//f/9</h3>
+                        <p>Years of Experience</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-function App() { return ( <Router> <Routes> <Route path="/" element={<Home />} /> <Route path="/study" element={<StudyArena />} /> <Route path="/lucky" element={<LuckyArena />} /> <Route path="/login" element={<Login />} /> <Route path="/wallet" element={<Wallet />} /> <Route path="/profile" element={<Profile />} /> <Route path="/admin" element={<AdminPanel />} /> </Routes> </Router> ); }
+    <!-- Testimonials Section -->
+    <section class="section testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Client Testimonials</h2>
+                <p>Don't just take our word for it - hear what our satisfied customers have to say</p>
+            </div>
+            
+            <div class="testimonial-slider">
+                <div class="swiper-container testimonialSwiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="testimonial-card">
+                                <div class="testimonial-text">
+                                    Premier Painters transformed our home! The team was professional, punctual, and their attention to detail was impressive. Our house looks brand new again. Highly recommended for anyone in Ghazipur looking for quality painting services.
+                                </div>
+                                <div class="testimonial-author">
+                                    <div class="author-img" style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
+                                    <div class="author-info">
+                                        <h4>Rajesh Kumar</h4>
+                                        <p>Residential Client, Ghazipur</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="swiper-slide">
+                            <div class="testimonial-card">
+                                <div class="testimonial-text">
+                                    We hired Premier Painters for our office renovation project. They completed the job on time and within budget. The quality of work exceeded our expectations. Will definitely use their services again for our future projects.
+                                </div>
+                                <div class="testimonial-author">
+                                    <div class="author-img" style="background-image: url('https://randomuser.me/api/portraits/women/44.jpg');"></div>
+                                    <div class="author-info">
+                                        <h4>Priya Sharma</h4>
+                                        <p>Business Owner, Ghazipur</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="swiper-slide">
+                            <div class="testimonial-card">
+                                <div class="testimonial-text">
+                                    Mr. Sharma and his team did an excellent job waterproofing our terrace. They identified the problem areas and provided a comprehensive solution. Two monsoons later, we've had no leaks. Professional service from start to finish.
+                                </div>
+                                <div class="testimonial-author">
+                                    <div class="author-img" style="background-image: url('https://randomuser.me/api/portraits/men/67.jpg');"></div>
+                                    <div class="author-info">
+                                        <h4>Vikram Singh</h4>
+                                        <p>Homeowner, Ghazipur</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-export default App;
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Get in touch for a free consultation and quote</p>
+            </div>
+            
+            <div class="contact-container">
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="Enter your email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="service">Service Interested In</label>
+                            <select id="service" class="form-control">
+                                <option value="">Select a service</option>
+                                <option value="residential">Residential Painting</option>
+                                <option value="commercial">Commercial Painting</option>
+                                <option value="waterproofing">Waterproofing</option>
+                                <option value="wallpaper">Wallpaper Installation</option>
+                                <option value="decorative">Decorative Finishes</option>
+                                <option value="wood">Wood Finishing</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" class="form-control" placeholder="Tell us about your project" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+                
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115132.74872215977!2d83.490861!3d25.580536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398d2b6c0e1e9d2d%3A0x86d1e9f7360e2244!2sGhazipur%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1688993123456!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
 
-// 3. pages/Home.jsx - Homepage with animated game cards import React from "react"; import { motion } from "framer-motion"; import { Link } from "react-router-dom";
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/919876543210" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
-const games = [ { name: "Typing Test", path: "/study" }, { name: "Quiz War", path: "/study" }, { name: "Math Battle", path: "/study" }, { name: "Spin Wheel", path: "/lucky" }, { name: "Lucky Box", path: "/lucky" }, { name: "Scratch Card", path: "/lucky" }, ];
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-paint-roller"></i>
+                        </div>
+                        <div class="logo-text" style="color: white;">Premier<span style="color: var(--secondary);">Painters</span></div>
+                    </div>
+                    <p style="margin-top: 20px; color: #bbb;">Providing professional painting services in Ghazipur and surrounding areas since 1995. Quality workmanship guaranteed.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-"x</i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Our Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Residential Painting</a></li>
+                        <li><a href="#">Commercial Painting</a></li>
+                        <li><a href="#">Waterproofing Solutions</a></li>
+                        <li><a href="#">Wallpaper Installation</a></li>
+                        <li><a href="#">Decorative Finishes</a></li>
+                        <li><a href="#">Wood Finishing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#">Get Quote</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Info</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>123 Main Road, Ghazipur<br>Uttar Pradesh, 233001</div>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone-alt"></i>
+                            <div>+//3//f/9 98765 43210</div>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <div>i
 
-export default function Home() { return ( <div className="bg-gradient-to-r from-[#0f0f0f] to-[#1f1f1f] min-h-screen p-4"> <h1 className="text-3xl font-bold text-white text-center mb-6">+2Dzfrg Welcome to EduWin Casino</h1> <div className="grid grid-cols-2 sm:grid-cols-3 gap-4"> {games.map((game, index) => ( <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="bg-[#1e1e2f] text-white rounded-2xl shadow-lg p-6 text-center hover:bg-[#292941] transition-all" key={index} > <Link to={game.path}> <h2 className="text-xl font-semibold">{game.name}</h2> </Link> </motion.div> ))} </div> </div> ); }
 
-// 4. Firebase config (firebase.js) import { initializeApp } from "firebase/app"; import { getAuth } from "firebase/auth"; import { getFirestore } from "firebase/firestore"; import { getDatabase } from "firebase/database";
+                            <div>info@mauryapainting.com</div>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <div>Mon-Sat: 8:00 AM - 6:00 PM<br>Sunday: Closed</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2023 Ghazipur Painting Works. All Rights Reserved. | Designed with  in Ghazipur
+            </div>
+        </div>
+    </footer>
 
-const firebaseConfig = { apiKey: "YOUR_API_KEY", authDomain: "YOUR_PROJECT.firebaseapp.com", projectId: "YOUR_PROJECT", storageBucket: "YOUR_PROJECT.appspot.com", messagingSenderId: "SENDER_ID", appId: "APP_ID", databaseURL: "https://YOUR_PROJECT.firebaseio.com" };
-
-const app = initializeApp(firebaseConfig); export const auth = getAuth(app); export const db = getFirestore(app); export const rtdb = getDatabase(app);
-
-// Note: // - You+IBk-ll need to implement each game in a similar UI card structure. // - Multiplayer via Firebase Realtime DB sync. // - Wallet using Firestore and coin balance. // - Razorpay Web SDK for payments. // - JWT login +- Firebase Auth
-
-// Tell me which module (wallet, multiplayer, login, spin wheel) you want coded next.
-
+    <script>
+        // Initialize Swiper sliders
+        const heroSwiper = new Swiper('.swiper-container', {
+            loop: true,
+            autoplay: {
+                delay: 5000,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+        
+        const testimonialSwiper = new Swiper('.testimonialSwiper', {
+            loop: true,
+            autoplay: {
+                delay: 7000,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
+        
+        // Mobile navigation toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mainNav = document.getElementById('mainNav');
+        
+        mobileToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            mobileToggle.innerHTML = mainNav.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mainNav a').forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Form submission
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const service = document.getElementById('service').value;
+            
+            // Show success message
+            alert(`Thank you ${name}! We've received your inquiry for ${service || 'painting services'}. We'll contact you at ${phone} shortly.`);
+            
+            // Reset form
+            contactForm.reset();
+        });
+        
+        // Sticky header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
